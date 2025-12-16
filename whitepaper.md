@@ -1,81 +1,59 @@
-Optimizing Credit Portfolio Risk: A Machine Learning Approach to Predicting Loan Default
-Table of Contents
-Optimizing Credit Portfolio Risk: A Machine Learning Approach to Predicting Loan Default	1
-1. Business Problem	1
-2. Background and Context	1
-3. Data Explanation	2
-Data Preparation and Preprocessing	2
-Imbalance Mitigation	3
-4. Methods	3
-Exploratory Data Analysis	3
-Predictive Modeling	4
-Evaluation Criteria	4
-5. Analysis and Interpretation of Results	4
-Feature Importance	5
-6. Conclusion	6
-7. Assumptions	6
-8. Limitations and Challenges	7
-9. Future Uses and Additional Applications	7
-10. Recommendations and Implementation Plan	7
-11. Ethical Assessment	8
-Appendix: Supporting Documentation	8
-References	9
+# Optimizing Credit Portfolio Risk: A Machine Learning Approach to Predicting Loan Default
 
-
-
-1. Business Problem
+## 1. Business Problem
 Financial institutions face substantial, direct financial losses when borrowers fail to repay their loans. Historically, risk assessment has relied on static credit scoring models that often result in an overly cautious or reactive approach, either rejecting creditworthy applicants or approving high-risk ones. The core business problem this project addresses is the transition from this reactive loss absorption to proactive risk management. By accurately predicting the probability of default before a loan is finalized, the institution can optimize its entire lending portfolio, significantly reduce non-performing assets, and ensure lending decisions are both profitable and fair.
-2. Background and Context
+## 2. Background and Context
 The evaluation of credit risk has traditionally been dominated by scoring systems like FICO, which rely on historical payment behavior to generate a single aggregate risk metric. While these methods are robust and regulated, they can fail to capture the complex, non-linear relationships and intricate data patterns that determine a borrower’s future probability of default. The adoption of advanced machine learning is crucial because it allows institutions to dynamically weight dozens of factors simultaneously. This project provides a transparent methodology for integrating a predictive model into the credit approval workflow, a necessity for competing in today’s rapidly evolving, data-driven financial landscape.
-3. Data Explanation
+## 3. Data Explanation
 This analysis is based on the Credit Risk Dataset (Lao Tse, 2020), an open-source collection of historical loan records that serves as a representative proxy for real-world borrower behavior. The dataset comprises approximately 32,581 unique records, featuring 12 key attributes, including the borrower’s age, annual income, home ownership status, the amount and purpose of the loan, and the length of their credit history. The key variable under investigation is loan_status, a binary field indicating whether the applicant defaulted (1) or paid back the loan (0).
-Data Preparation and Preprocessing
+### Data Preparation and Preprocessing
 The raw data required rigorous preprocessing to ensure model stability and integrity. Initial inspection revealed missing values, particularly in the employment length and interest rate fields. These were addressed using median imputation, a statistical technique that preserves the overall distribution of the features. Furthermore, a critical step involved detecting and capping outliers in high-magnitude fields, such as person_income, using the Interquartile Range method to prevent extreme values from skewing model training. Finally, all non-numeric categorical features, such as home ownership and loan intent, were converted into numerical representations using One-Hot Encoding to be processed effectively by the machine learning algorithms.
-Imbalance Mitigation
+### Imbalance Mitigation
 A typical challenge in credit risk modeling is Class Imbalance, where the number of non-defaulting loans far exceeds the number of defaults. In the target dataset, approximately 80% of loans were non-default. Training a model directly on this data would yield high apparent accuracy but poor performance at identifying the actual high-risk loans. To correct this, the Synthetic Minority Oversampling Technique (SMOTE) was applied solely to the training subset. This technique generates synthetic examples of the minority class (defaulters), thereby achieving a balanced training environment without requiring the fabrication of new information in the crucial testing data.
-4. Methods
+## 4. Methods
+### Train-Test Split
 The project employed a comparative modeling approach, dividing the preprocessed data into training and testing sets (with a 70:30 ratio).
-Exploratory Data Analysis
+### Exploratory Data Analysis
 Prior to modeling, Exploratory Data Analysis (EDA) was performed to understand the inherent structure of the data. Key visualizations mapped the distribution of the target variable against influential predictors. As shown in Figure 1 below, a clear relationship was established showing that applicants with a higher loan-to-income ratio exhibited significantly higher rates of default. This step was vital for confirming the expected directional relationships and providing context for the final model’s feature importance results.
 [Insert your uploaded image: image_25f75c.jpg here with caption: Figure 1: Impact of Loan-to-Income Ratio on Default Status]
-Predictive Modeling
+### Predictive Modeling
 Two distinct supervised learning models were selected to compare predictive power against interpretability. Logistic Regression served as a transparent baseline. Given its linear nature, the weights assigned to each feature are easily explained. The XGBoost Classifier, an advanced gradient boosting framework, was selected for its proven ability to handle complex, non-linear financial data and maximize performance.
-Evaluation Criteria
+### Evaluation Criteria
 Since the business priority is to prevent losses, the evaluation focused on minimizing the number of undetected defaulters (False Negatives). Therefore, the primary metrics for success were Recall (the proportion of actual defaulters correctly identified) and the F1-Score (the harmonic mean of Precision and Recall), with standard Accuracy serving only as a general performance indicator.
-5. Analysis and Interpretation of Results
+## 5. Analysis and Interpretation of Results
 The models were trained on historical data and evaluated on an unseen testing set to simulate real-world performance.
 The Logistic Regression baseline achieved a Recall of 77.43%, meaning it correctly identified roughly three out of four defaulters. However, its overall Accuracy was lower at 81.25%, and its F1-Score was only 64.37%. This low F1-Score indicates that while the model was sensitive, it likely flagged too many safe customers as risky (False Positives), which would hurt the bank's profitability by rejecting good business.
 The XGBoost Classifier demonstrated a far superior balance of performance. It achieved a remarkable Accuracy of 93.55% and a strong F1-Score of 83.44%. Although its Recall was slightly lower at 74.28%, the trade-off is justifiable. The XGBoost model is significantly more precise, ensuring that while we catch the majority of bad loans, we do not alienate creditworthy customers.
 Figure 2 (the Confusion Matrix below) details the specific performance of the XGBoost model. Out of the total test pool, the model correctly identified 1,580 defaulters (True Positives). Crucially, it only wrongly rejected 80 safe customers (False Positives). This extremely low False Positive rate validates XGBoost as the operationally superior model for a modern bank that values both risk protection and customer acquisition.
 [Insert your uploaded image: image_25f71d.png here with caption: Figure 2: XGBoost Confusion Matrix]
-Feature Importance
+### Feature Importance
 A critical component of the analysis involved interpreting the XGBoost model to understand why it makes certain predictions. Using Feature Importance analysis, we determined the primary drivers of default. As illustrated in Figure 3, the single most predictive feature was person_home_ownership_RENT. This suggests that applicants who rent rather than own homes are statistically more likely to default.
 The next most important features were the Loan Grades (specifically Grade D and C) assigned by the institution, followed by the loan_percent_income. This confirms that the model is learning from rational financial indicators: borrowers who do not own assets and are borrowing a large percentage of their income are correctly flagged as higher risk.
 [Insert your uploaded image: image_25f6de.png here with caption: Figure 3: Top 5 Predictors of Loan Default]
-6. Conclusion
+## 6. Conclusion
 The implementation of the XGBoost model effectively addresses the core business problem of proactive risk management. By accurately identifying high-risk applicants with an accuracy of over 93%, the model provides financial decision-makers with a powerful tool to protect capital. While the model misses approximately 25% of defaulters (as indicated by the 74% Recall), its exceptional precision ensures that the bank does not lose revenue by rejecting good customers.
-7. Assumptions
+## 7. Assumptions
 The modeling process rests on several key assumptions. The first is data representativeness, assuming the historical data accurately reflects the current applicant pool. The second is that the underlying economic environment remains relatively stable; for example, the model assumes that the relationship between "renting" and "defaulting" will not be inverted by a sudden housing market crash. Finally, it is assumed that the bank can define a fixed cost for a default, which is necessary to translate the model’s predictive performance into tangible dollar savings.
-8. Limitations and Challenges
+## 8. Limitations and Challenges
 A significant technical limitation is the reliance on historical data, which cannot account for sudden macroeconomic shocks (e.g., recessions) that may dramatically alter default rates outside the trained distribution. The primary practical challenge is the Class Imbalance inherent in credit data. Even with SMOTE oversampling, the model must constantly balance the trade-off between catching every fraudster (high Recall) and approving every good customer (high Precision).
-9. Future Uses and Additional Applications
+## 9. Future Uses and Additional Applications
 The predictive model can be extended beyond simple acceptance or rejection. The output probability can be used for dynamic, risk-based pricing, where applicants with an intermediate default probability can be offered the loan but at a higher, risk-adjusted interest rate. Furthermore, the model can be applied for portfolio management, identifying existing low-performing loans that may require early intervention or restructuring.
-10. Recommendations and Implementation Plan
+## 10. Recommendations and Implementation Plan
 It is recommended that the institution immediately proceed to a controlled pilot phase using the XGBoost model.
 The implementation plan will be executed in two phases. Phase 1: Shadow Deployment and Audit (4-6 Weeks). The model will be run in parallel with the current loan approval system. Model recommendations will be recorded but not acted upon, allowing lending officers to verify its recommendations against their own decisions. Phase 2: Live Integration (Ongoing). The model will be integrated via an API into the automated loan origination system. The model's prediction will become the primary risk score, triggering automatic approval, rejection, or manual review based on predefined risk thresholds.
-11. Ethical Assessment
+## 11. Ethical Assessment
 The adoption of a predictive credit model necessitates a robust ethical assessment. The primary concern is Algorithmic Bias—that the model inadvertently discriminates against protected groups. The finding that "Renting" is the top predictor of default must be carefully scrutinized, as home ownership rates often correlate with race and socioeconomic status. To ensure compliance with the Fair Credit Reporting Act (FCRA), the implementation must guarantee that every rejected applicant receives a clear, jargon-free Reason for Adverse Action. The transparency provided by the feature importance analysis is the essential technical tool for meeting this legal and ethical requirement, ensuring that the model remains accountable.
  
-Appendix: Supporting Documentation
-Data Dictionary Snippet
+## Appendix: Supporting Documentation
+### Data Dictionary Snippet
 •	loan_status: Target variable (0 = Non-Default, 1 = Default).
 •	person_home_ownership: Categorical variable (RENT, OWN, MORTGAGE, OTHER).
 •	loan_percent_income: Numerical ratio of the loan amount to the borrower's annual income.
 •	loan_grade: Categorical grade (A-G) assigned to the loan based on initial assessment.
-Code Summary The analysis was performed using Python (Pandas, Scikit-Learn, XGBoost). Missing values were handled via median imputation. The training data was balanced using SMOTE. The final XGBoost model utilized 100 estimators with a maximum depth of 5 and a learning rate of 0.1.
+### Code Summary The analysis was performed using Python (Pandas, Scikit-Learn, XGBoost). Missing values were handled via median imputation. The training data was balanced using SMOTE. The final XGBoost model utilized 100 estimators with a maximum depth of 5 and a learning rate of 0.1.
  
-References
+## References
 Davydenko, S. A., Strebulaev, I. A., & Zhao, Y. (2015). A market-based study of the cost of default. The Review of Financial Studies, 28(1), 1–45.
 Lao Tse. (2020). Credit Risk Dataset (Version 1) [Data set]. Kaggle. https://www.kaggle.com/datasets/laotse/credit-risk-dataset
 
-<img width="468" height="642" alt="image" src="https://github.com/user-attachments/assets/f7e662b3-c4c3-407f-bb86-c53d6307e54a" />
+<img width="468" height="650" alt="image" src="https://github.com/user-attachments/assets/1f15fd72-f4e4-497a-afa5-32f15bbb0fb6" />
