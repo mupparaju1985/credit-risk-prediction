@@ -63,6 +63,10 @@ Answer: XGBoost offered 93% accuracy compared to ~84% for Logistic Regression. I
 
 ## B. Visualizations
 •	Figure 1: Impact of Loan-to-Income Ratio on Default Status.
+
+<p align="center">
+  <img src="images/Illustration_1_EDA_Loan_Income.png" width="400">
+</p>
  
 •	Figure 2: XGBoost Confusion Matrix.
  
