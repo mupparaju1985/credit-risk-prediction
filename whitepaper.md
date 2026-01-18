@@ -69,8 +69,16 @@ Answer: XGBoost offered 93% accuracy compared to ~84% for Logistic Regression. I
 </p>
  
 •	Figure 2: XGBoost Confusion Matrix.
+
+<p align="center">
+  <img src="images/Illustration_2_Confusion_Matrix.png" width="400">
+</p>
  
 •	Figure 3: Top 5 Predictors of Loan Default.
+
+<p align="center">
+  <img src="images/Illustration_3_Feature_Importance.png" width="400">
+</p>
  
  
 ## References
