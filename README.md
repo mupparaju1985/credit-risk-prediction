@@ -26,7 +26,7 @@ The project is organized for clarity and reproducibility:
 | `whitepaper.md` | Full technical deep-dive, detailing EDA, methods, and ethical considerations. (Milestone 2 Content) |
 | `notebooks/` | Contains the **Exploratory Data Analysis (EDA)** and model experimentation scratchpad. |
 | `src/` | Contains the final, production-ready Python script (`loan_predictor.py`). |
-| `diagrams/` | **
+| `images/` | **
 
 [Image of Data Science Workflow]
 ** Contains the overall data flow architecture (ETL, Modeling, Deployment). |
